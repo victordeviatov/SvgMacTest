@@ -1,0 +1,26 @@
+name: Aspose SVG Mac test
+
+on: [push, pull_request]
+
+jobs:
+  build-test:
+    runs-on: macos-14     # or macos-14-xlarge-arm64
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x     # or 9.0.x if you need it
+
+    - name: Restore & build
+      run: dotnet build SvgMacTest/SvgMacTest.csproj --configuration Release
+
+    - name: Run demo operation
+      run: dotnet run --configuration Release --project SvgMacTest/SvgMacTest.csproj
+
+    - name: Upload artefact (PDF)
+      uses: actions/upload-artifact@v4
+      with:
+        name: demo-output
+        path: SvgMacTest/merged-svg.pdf
